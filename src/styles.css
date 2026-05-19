@@ -16,3 +16,13 @@ body {
 .font-display {
   font-family: var(--font-display);
 }
+
+.results-track {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.results-track::-webkit-scrollbar {
+  display: none;
+}

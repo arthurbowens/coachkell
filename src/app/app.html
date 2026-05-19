@@ -16,6 +16,7 @@
       </a>
       <div class="hidden items-center gap-8 text-sm font-medium text-zinc-300 md:flex">
         <a href="#sobre" class="transition-colors hover:text-amber-400">Sobre</a>
+        <a href="#resultados" class="transition-colors hover:text-amber-400">Resultados</a>
         <a href="#servicos" class="transition-colors hover:text-amber-400">Serviços</a>
         <a href="#contato" class="transition-colors hover:text-amber-400">Contato</a>
       </div>
@@ -123,6 +124,115 @@
             </li>
           }
         </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resultados -->
+  <section id="resultados" class="border-t border-zinc-800/80 py-20 sm:py-28">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="max-w-2xl">
+        <h2 class="font-display text-4xl tracking-wide text-white uppercase sm:text-5xl">
+          <span class="text-amber-400">Resultados</span>
+        </h2>
+        <p class="mt-4 text-lg text-zinc-400">
+          Transformações reais de alunos com dedicação, constância e o método Coach Kell.
+        </p>
+      </div>
+      <div
+        class="relative mt-12"
+        (mouseenter)="pauseCarousel()"
+        (mouseleave)="resumeCarousel()"
+        role="region"
+        aria-roledescription="carrossel"
+        aria-label="Galeria de resultados dos alunos"
+      >
+        <div
+          class="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent sm:w-24"
+        ></div>
+        <div
+          class="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-zinc-950 via-zinc-950/80 to-transparent sm:w-24"
+        ></div>
+
+        <div
+          #resultsTrack
+          class="results-track flex gap-5 overflow-x-auto scroll-smooth px-1 pb-2 sm:gap-6"
+        >
+          @for (result of results; track result.src; let i = $index) {
+            <figure
+              data-slide
+              [attr.data-index]="i"
+              class="group w-[min(82vw,300px)] shrink-0 snap-center overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 shadow-xl shadow-black/40 transition duration-500 sm:w-[min(44vw,340px)] lg:w-[min(32vw,380px)]"
+              [class.ring-2]="activeSlide() === i"
+              [class.ring-amber-400/80]="activeSlide() === i"
+              [class.scale-[0.97]]="activeSlide() !== i"
+              [class.opacity-80]="activeSlide() !== i"
+            >
+              <div class="relative aspect-[3/4] overflow-hidden">
+                <img
+                  [src]="result.src"
+                  [alt]="result.alt"
+                  class="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                  [loading]="i < 3 ? 'eager' : 'lazy'"
+                  width="400"
+                  height="533"
+                />
+                <div
+                  class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/40 to-transparent px-4 pb-4 pt-16"
+                >
+                  <span class="font-display text-3xl tracking-widest text-amber-400/90">{{
+                    slideLabel(i)
+                  }}</span>
+                </div>
+              </div>
+            </figure>
+          }
+        </div>
+
+        <button
+          type="button"
+          (click)="scrollPrev()"
+          class="absolute left-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-zinc-700 bg-zinc-950/90 text-zinc-200 shadow-lg backdrop-blur-sm transition hover:border-amber-500/50 hover:bg-zinc-900 hover:text-amber-400 sm:left-4 sm:h-12 sm:w-12"
+          aria-label="Resultado anterior"
+        >
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          (click)="scrollNext()"
+          class="absolute right-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-zinc-700 bg-zinc-950/90 text-zinc-200 shadow-lg backdrop-blur-sm transition hover:border-amber-500/50 hover:bg-zinc-900 hover:text-amber-400 sm:right-4 sm:h-12 sm:w-12"
+          aria-label="Próximo resultado"
+        >
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+          <p class="text-sm font-medium tabular-nums text-zinc-500">
+            <span class="text-amber-400">{{ slideLabel(activeSlide()) }}</span>
+            <span class="mx-1 text-zinc-600">/</span>
+            <span>{{ slideLabel(results.length - 1) }}</span>
+          </p>
+          <div class="flex items-center gap-2">
+            @for (result of results; track result.src; let i = $index) {
+              <button
+                type="button"
+                (click)="goToSlide(i)"
+                class="h-2 rounded-full transition-all duration-300"
+                [class.w-8]="activeSlide() === i"
+                [class.w-2]="activeSlide() !== i"
+                [class.bg-amber-400]="activeSlide() === i"
+                [class.bg-zinc-700]="activeSlide() !== i"
+                [class.hover:bg-zinc-500]="activeSlide() !== i"
+                [attr.aria-label]="'Ir para resultado ' + (i + 1)"
+                [attr.aria-current]="activeSlide() === i ? 'true' : null"
+              ></button>
+            }
+          </div>
+        </div>
       </div>
     </div>
   </section>
