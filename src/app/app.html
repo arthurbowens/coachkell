@@ -162,23 +162,23 @@
             <figure
               data-slide
               [attr.data-index]="i"
-              class="group w-[min(82vw,300px)] shrink-0 snap-center overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 shadow-xl shadow-black/40 transition duration-500 sm:w-[min(44vw,340px)] lg:w-[min(32vw,380px)]"
+              class="group w-[min(90vw,380px)] shrink-0 snap-center overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 shadow-xl shadow-black/40 transition duration-500 sm:w-[min(52vw,440px)] lg:w-[min(40vw,480px)]"
               [class.ring-2]="activeSlide() === i"
               [class.ring-amber-400/80]="activeSlide() === i"
               [class.scale-[0.97]]="activeSlide() !== i"
               [class.opacity-80]="activeSlide() !== i"
             >
-              <div class="relative aspect-[3/4] overflow-hidden">
+              <div class="relative flex h-[min(72vh,580px)] items-center justify-center overflow-hidden bg-zinc-900">
                 <img
                   [src]="result.src"
                   [alt]="result.alt"
-                  class="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                  class="max-h-full max-w-full object-contain transition duration-700 group-hover:scale-[1.02]"
                   [loading]="i < 3 ? 'eager' : 'lazy'"
-                  width="400"
-                  height="533"
+                  width="480"
+                  height="640"
                 />
                 <div
-                  class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/40 to-transparent px-4 pb-4 pt-16"
+                  class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/30 to-transparent px-4 pb-4 pt-12"
                 >
                   <span class="font-display text-3xl tracking-widest text-amber-400/90">{{
                     slideLabel(i)
