@@ -35,14 +35,12 @@ interface Result {
 })
 export class App implements OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
-  private autoplayTimer?: ReturnType<typeof setInterval>;
   private scrollObserver?: IntersectionObserver;
 
   readonly resultsTrack = viewChild<ElementRef<HTMLElement>>('resultsTrack');
 
   readonly year = new Date().getFullYear();
   readonly activeSlide = signal(0);
-  readonly carouselPaused = signal(false);
 
   readonly whatsappUrl =
     'https://wa.me/5511964979304?text=Ol%C3%A1%20Coach%20Kell%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20treinos.';
@@ -124,29 +122,17 @@ export class App implements OnDestroy {
         requestAnimationFrame(() => {
           this.setupCarouselObserver();
           this.syncVideos(this.activeSlide());
-          this.startAutoplay();
         });
       }
     });
   }
 
   ngOnDestroy(): void {
-    this.stopAutoplay();
     this.scrollObserver?.disconnect();
   }
 
   slideLabel(index: number): string {
     return String(index + 1).padStart(2, '0');
-  }
-
-  pauseCarousel(): void {
-    this.carouselPaused.set(true);
-    this.stopAutoplay();
-  }
-
-  resumeCarousel(): void {
-    this.carouselPaused.set(false);
-    this.startAutoplay();
   }
 
   scrollPrev(): void {
@@ -234,18 +220,5 @@ export class App implements OnDestroy {
     );
 
     slides.forEach((slide) => this.scrollObserver?.observe(slide));
-  }
-
-  private startAutoplay(): void {
-    if (!isPlatformBrowser(this.platformId) || this.carouselPaused()) return;
-    this.stopAutoplay();
-    this.autoplayTimer = setInterval(() => this.scrollNext(), 5000);
-  }
-
-  private stopAutoplay(): void {
-    if (this.autoplayTimer) {
-      clearInterval(this.autoplayTimer);
-      this.autoplayTimer = undefined;
-    }
   }
 }
